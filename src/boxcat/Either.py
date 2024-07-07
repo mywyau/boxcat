@@ -7,8 +7,8 @@ U = TypeVar('U')
 
 class Either(Generic[L, R]):
 
-    def __init__(self):
-        self.value = None
+    # def __init__(self):
+    #     self.value = None
 
     def is_left(self) -> bool:
         return isinstance(self, Left)
@@ -34,12 +34,14 @@ class Either(Generic[L, R]):
 
 # Left subclass
 class Left(Either[L, R]):
+    __match_args__ = ('value',)
     def __init__(self, value: L):
         self.value = value
 
 
 # Right subclass
 class Right(Either[L, R]):
+    __match_args__ = ('value',)
     def __init__(self, value: R):
         self.value = value
 
