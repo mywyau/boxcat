@@ -1,8 +1,8 @@
 # boxcat
 
 
-A small playground library for fp in Python
-
+A small playground library for fp in Python, inspired from my time writing
+Scala
 
 ### Development testing
 
