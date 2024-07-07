@@ -1,0 +1,18 @@
+Development notes
+
+You will need to setup up the username and api key
+
+__token__
+api_key = ????
+
+to rebuild the project for upload to pypi
+
+python setup.py sdist bdist_wheel
+
+---
+
+using twine to upload to pypi
+
+twine upload dist/*
+
+---
