@@ -27,6 +27,9 @@ class Seq(Generic[T]):
     def map(self, func: Callable[[T], U]) -> 'Seq[U]':
         return Seq([func(item) for item in self.list])
 
+    def mapN(self, func: Callable[..., U], *seqs: List[T]) -> List[U]:
+        return [func(*args) for args in zip(self.list, *seqs)]
+
     def flat_map(self, func: Callable[[T], List[U]]) -> 'Seq[U]':
         flattened = [item for sublist in map(func, self.list) for item in sublist]
         return Seq(flattened)
@@ -52,8 +55,12 @@ class Seq(Generic[T]):
 
         return reduce(lambda acc, item: inner_func(item, acc), reversed(self.list), initial)
 
+    def reverse(self) -> 'Seq[T]':
+        return Seq(reversed(self.list))
+
     def to_list(self) -> List[T]:
         return self.list
+
 
 
 if __name__ == "__main__":
@@ -71,7 +78,7 @@ if __name__ == "__main__":
     print(f"Take 3: {numbers[:3]}")
 
     # Map each element to its square
-    print(f"Map to squares: {seq.map(lambda x: x * x).to_list()}")
+    print(reversed(f"Map to squares: {seq.map(lambda x: x * x).to_list()}"))
 
     # Flatten elements after mapping to lists
     print(f"Flat map: {seq.flat_map(lambda x: [x, x]).to_list()}")
