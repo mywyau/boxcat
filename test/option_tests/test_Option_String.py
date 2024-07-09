@@ -33,6 +33,12 @@ def test_option_map_string_upper():
     assert option_upper_case.get_or_else("option_empty") == "HELLO WORLD"
 
 
+def test_option_map_string_reversed():
+    option_hello_world = Option("hello world")
+    option_capitalized = option_hello_world.map(lambda s: s[::-1])
+    assert option_capitalized.get_or_else("option_empty") == "dlrow olleh"
+
+
 def test_option_flat_map():
     some = Option(5)
     option_ten = some.flat_map(lambda x: Option(x * 2))
