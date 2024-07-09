@@ -31,6 +31,7 @@ def test_fill_currying_capabilities():
     result_4 = empty_Seq_2.fill(2)(1, "Mikey", True)
     assert result_4.to_list() == [1, 'Mikey', True, 1, 'Mikey', True]
 
+
 def test_map():
     numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
@@ -53,6 +54,14 @@ def test_fold_left():
     seq = Seq(numbers)
 
     assert seq.fold_left(0)(lambda x, y: x + y) == 55
+
+
+def test_filter():
+    numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+    seq = Seq(numbers)
+
+    assert seq.filter(lambda x: x % 2 == 0).to_list() == [2, 4, 6, 8, 10]
 
 
 # If you want to run tests from the command line using pytest

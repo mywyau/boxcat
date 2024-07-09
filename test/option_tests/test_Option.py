@@ -49,6 +49,11 @@ def test_option_get_or_else():
     assert some.get_or_else(0) == 5
 
 
+def test_option_unsafe_get():
+    some = Option(999)
+    assert some.unsafe_get() == 999
+
+
 def test_option_none():
     none = Option(None)
     assert not none.is_some()
