@@ -69,7 +69,6 @@ jobs:
         sed -i "s/version='.*'/version='${{ env.NEW_VERSION }}'/" pyproject.toml 
         cat pyproject.toml
 
-
     - name: Create and push new tag
       env:
         NEW_VERSION: ${{ env.NEW_VERSION }}

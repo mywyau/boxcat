@@ -55,6 +55,11 @@ jobs:
       - name: Print new version
         run: echo "The new version is ${{ env.NEW_VERSION }}"
 
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install setuptools wheel twine      
+
       - name: Update the project version temp
         run: |
           ./update_project_version.sh "${{ env.NEW_VERSION }}"
