@@ -13,6 +13,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+
+      - name: Create and Checkout New Branch
+        run: git checkout -b new-branch-name
+
+      - name: Clean the dist directory
+        run: rm -rf dist/
+
       - name: Fetch all tags
         run: git fetch --tags
 
@@ -40,14 +51,14 @@ jobs:
           
           echo "NEW_VERSION=$new_version" >> $GITHUB_ENV
         shell: /usr/bin/bash -e {0}
-        env:
-          latest_tag: v0.0.5
 
       - name: Print new version
         run: echo "The new version is ${{ env.NEW_VERSION }}"
 
-      - name: Clean the dist directory
-        run: rm -rf dist/
+      - name: Update the project version temp
+        run: |
+          cd publish_scripts
+          ./update_project_version.sh "${{ env.NEW_VERSION }}"
 
       - name: Build package
         run: |
@@ -79,9 +90,7 @@ jobs:
           asset_name: my_package-${{ env.NEW_VERSION }}.tar.gz
           asset_content_type: application/gzip
 
-      - name: Publish to PyPI
-        env:
-          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-        run: |
-          twine upload dist/*
+      - name: Create and Checkout New Branch
+        run: | 
+              git checkout main
+              git branch -D new-branch-name
