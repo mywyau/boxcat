@@ -254,7 +254,8 @@ But for the sake of hacking something together I present:
 
 ## ProductOpt
 
-Pretty cursed but hey whatever, apply a 
+Pretty cursed but hey whatever, basically allows you to apply a function 
+to all the Option[T] within the ProductOpt()
 
 ```
 opt1 = Option(1)
@@ -280,6 +281,9 @@ print(productOpt)
 ## ProductSeq
 
 Hacky and Wacky
+
+Again basically allows you to apply a function 
+to all the Seq[T] within the ProductSeq()
 
 ```
 seq1 = Seq([1, 2, 3, 4])
