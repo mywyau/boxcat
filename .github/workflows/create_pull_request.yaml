@@ -1,0 +1,15 @@
+name: Create Pull Request
+
+on: [push, pull_request]
+
+jobs:
+  create-pull-request:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Run tests
+      run: |
+        pytest
