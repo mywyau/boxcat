@@ -62,7 +62,7 @@ jobs:
     - name: Update version in setup.py
       run: |
         sed -i "s/version='.*'/version='${{ env.NEW_VERSION }}'/" setup.py
-        echo setup.py
+        cat setup.py
 
     - name: Update version in pyproject.toml
       run: |
