@@ -10,6 +10,12 @@ class Seq(Generic[T]):
     def __init__(self, iterable: List[T]):
         self.list = iterable
 
+    def is_not_empty(self) -> bool:
+        if len(self.list) > 0:
+            return True
+        else:
+            return False
+
     def take(self, n: int) -> 'Seq[T]':
         return Seq(self.list[:n])
 
@@ -60,4 +66,3 @@ class Seq(Generic[T]):
 
     def to_list(self) -> List[T]:
         return self.list
-
