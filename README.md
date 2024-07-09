@@ -11,6 +11,12 @@ Scala
 pytest
 ```
 
+* Github Actions runs the tests when making a pull request and on push.
+* Github Actions also creates a new tag, release and publishes to PyPi on merge/push into `main`
+
+Please be careful during dev 
+
+
 # Usage
 
 ---
