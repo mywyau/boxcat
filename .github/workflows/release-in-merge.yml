@@ -66,6 +66,9 @@ jobs:
           draft: false
           prerelease: false
 
+      - name: List dist directory
+        run: ls -la dist
+
       - name: Upload Release Assets
         uses: actions/upload-release-asset@v1
         env:
