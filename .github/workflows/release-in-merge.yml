@@ -57,7 +57,7 @@ jobs:
 
     - name: Clean workspace
       run: |
-        git clean -ffdx
+#        git clean -ffdx
         rm -rf dist/ build/
 
     - name: Update version in setup.py
