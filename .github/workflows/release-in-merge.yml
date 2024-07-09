@@ -1,84 +1,81 @@
-name: Create Release on Merge
+name: Increment Version and Create Release
 
 on:
   push:
     branches:
-      - main  # Trigger the workflow on pushes to the main branch
+      - main  # Change this to your default branch if it's not 'main'
 
 jobs:
   release:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-      with:
-        token: ${{ secrets.PAT }}
-        fetch-depth: 0  # Fetch all history for tags
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Fetch all tags
-      run: git fetch --tags
+      - name: Fetch all tags
+        run: git fetch --tags
 
-    - name: Get latest tag
-      id: get_latest_tag
-      run: echo "latest_tag=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_ENV
-
-    - name: Print latest tag
-      run: echo "The latest tag is ${{ env.latest_tag }}"
-
-    - name: Set up Git
-      run: |
-        git config --global user.name 'github-actions'
-        git config --global user.email 'github-actions@github.com'
-
-    - name: Calculate new version
-      id: calculate_version
-      run: |
-        latest_version=${{ env.LATEST_TAG }}
-        if [ -z "$latest_version" ]; then
-          latest_version="v0.0.3"
-        fi
-        latest_version=${latest_version#v}  # Remove the leading 'v'
-        IFS='.' read -ra ADDR <<< "$latest_version"
-        major=${ADDR[0]}
-        minor=${ADDR[1]}
-        patch=${ADDR[2]}
-        new_patch=$((patch + 1))
-        new_version="$major.$minor.$new_patch"
-
-        # Check if the new tag already exists
-        if git rev-parse "v${new_version}" >/dev/null 2>&1; then
-          # Increment patch if tag exists
-          new_patch=$((new_patch + 1))
+      - name: Get latest tag
+        id: get_latest_tag
+        run: |
+          latest_version=$(git describe --tags $(git rev-list --tags --max-count=1) 2>/dev/null)
+          if [ -z "$latest_version" ]; then
+            latest_version="v0.0.3"
+          fi
+          latest_version=${latest_version#v}  # Remove the leading 'v'
+          IFS='.' read -ra ADDR <<< "$latest_version"
+          major=${ADDR[0]}
+          minor=${ADDR[1]}
+          patch=${ADDR[2]}
+          new_patch=$((patch + 1))
           new_version="$major.$minor.$new_patch"
-        fi
+          
+          # Check if the new tag already exists
+          if git rev-parse "v${new_version}" >/dev/null 2>&1; then
+            # Increment patch if tag exists
+            new_patch=$((new_patch + 1))
+            new_version="$major.$minor.$new_patch"
+          fi
+          
+          echo "NEW_VERSION=$new_version" >> $GITHUB_ENV
+        shell: /usr/bin/bash -e {0}
+        env:
+          latest_tag: v0.0.5
 
-        echo "NEW_VERSION=$new_version" >> $GITHUB_ENV
+      - name: Print new version
+        run: echo "The new version is ${{ env.NEW_VERSION }}"
 
-    - name: Create and push new tag
-      env:
-        NEW_VERSION: ${{ env.NEW_VERSION }}
-      run: |
-        git tag "v${NEW_VERSION}"
-        git push https://github-actions:${{ secrets.PAT }}@github.com/mywyau/boxcat.git "v${NEW_VERSION}"
+      - name: Build package
+        run: |
+          python setup.py sdist bdist_wheel
+        env:
+          VERSION: ${{ env.NEW_VERSION }}
 
-    - name: Create GitHub Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        draft: false
-        prerelease: false
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ env.NEW_VERSION }}
+          release_name: Release v${{ env.NEW_VERSION }}
+          draft: false
+          prerelease: false
 
-    - name: Upload Release Assets
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./dist/*
-        asset_name: my_package-${{ github.ref }}.tar.gz
-        asset_content_type: application/gzip
+      - name: Upload Release Assets
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/*
+          asset_name: my_package-${{ env.NEW_VERSION }}.tar.gz
+          asset_content_type: application/gzip
+
+      - name: Publish to PyPI
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        run: |
+          twine upload dist/*
