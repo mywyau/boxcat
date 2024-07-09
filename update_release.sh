@@ -17,3 +17,11 @@ echo "Version updated to $new_version in setup.py"
 sed -i "s/^version = \".*\"$/version = \"$new_version\"/" pyproject.toml
 
 echo "Version updated to $new_version in pyproject.toml"
+
+pip install setuptools wheel twine
+
+rm -rf dist/ build/
+
+python setup.py sdist bdist_wheel
+
+twine upload dist/*
