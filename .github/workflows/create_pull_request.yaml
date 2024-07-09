@@ -1,6 +1,6 @@
 name: Create Pull Request
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   create-pull-request:
