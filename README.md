@@ -136,7 +136,7 @@ my_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 seq_numbers = Seq(my_list)
 
 only_evens = seq_numbers.filter(lambda x: x % 2 == 0)
-print(seq_add_one.to_list)
+print(only_evens.to_list)
 ```
 
 ```
