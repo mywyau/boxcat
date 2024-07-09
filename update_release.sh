@@ -1,27 +1,17 @@
 #!/bin/bash
 
-# Check if the version argument is provided
-if [ $# -ne 1 ]; then
-    echo "Usage: $0 <new_version>"
+# Check if two arguments are provided
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 new_version"
     exit 1
 fi
 
-# Assign the first argument to the new_version variable
-new_version=$1
+new_version="$1"
 
-# Use sed to update the version in pyproject.toml
-sed -i "s/^version = \".*\"$/version = \"$new_version\"/" setup.py
+./update_pyproject_toml.sh $1
 
-echo "Version updated to $new_version in setup.py"
+./update_setup_py_file.sh $1
 
-sed -i "s/^version = \".*\"$/version = \"$new_version\"/" pyproject.toml
-
-echo "Version updated to $new_version in pyproject.toml"
-
-pip install setuptools wheel twine
-
-rm -rf dist/ build/
-
-python setup.py sdist bdist_wheel
-
-twine upload dist/*
+# clean up .bak files
+rm pyproject.toml.bak
+rm setup.py.bak
