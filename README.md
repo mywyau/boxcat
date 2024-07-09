@@ -1,5 +1,7 @@
 # boxcat
 
+Please do not actually use this library. 
+
 A small playground library for fp in Python, inspired from my time writing
 Scala
 
@@ -136,10 +138,96 @@ my_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 seq_numbers = Seq(my_list)
 
 only_evens = seq_numbers.filter(lambda x: x % 2 == 0)
-print(seq_add_one.to_list)
+print(only_evens.to_list)
 ```
 
 ```
 result:
 [2, 4, 6, 8, 10]
+```
+
+---
+
+## Either
+
+So Eithers have 2 projections a Right and a Left.
+
+Conventionally a Left is used for error handling.
+
+Whilst Right will contain the values we want to work with.
+
+### Basic lifting value into the Either datatype 
+    left_value = Left("Error")
+    right_value = Right(42)
+
+### .map() on a Right(value)
+    right_value = Right(42)
+
+    mapped_right = right_value.map(lambda x: x * 2)
+    print(mapped_right.value if mapped_right.is_right() else "No value") 
+
+    # Output: 84
+
+### .map() on a Left(value)
+
+    left_value = Left("Error")
+
+    flat_mapped_right = right_value.flat_map(lambda x: Right(x * 2))
+    print(flat_mapped_right.value if flat_mapped_right.is_right() else "No value")  # Output: 84
+
+### .fold() on a Right(value)
+
+    right_value = Right(42)
+
+    result = right_value.fold(
+        if_left=lambda x: f"Error: {x}",
+        if_right=lambda x: f"Success: {x}"
+    )
+    print(result)  
+    
+    # Output: Success: 42
+
+### .fold() on a Left(value)
+
+    left_value = Left("Error")
+
+    result = left_value.fold(
+        if_left=lambda x: f"Error: {x}",
+        if_right=lambda x: f"Success: {x}"
+    )
+    print(result)  
+
+    # Output: Error: Error
+
+### pattern_matching on Either
+
+Similar to .fold() we can handle the Either by just pattern-matching on the Either, performing
+the pattern match within a method.
+
+```
+right_value = Right(999)
+
+def handle_either(either: Either[str, int]):
+    match result:
+        case Right(value):
+            return value
+        case Left(error_message):
+            return f"Got the error message: {error_messa
+handle_either(right_value)
+
+# Output: 999
+```
+```
+left_value = Left("Error")
+
+def handle_either(either: Either[str, int]):
+    match result:
+        case Right(value):
+            return value
+        case Left(error_message):
+            return f"Got the error message: {error_message}" 
+
+handle_either(left_value)
+
+# Output: "Error"
 ```

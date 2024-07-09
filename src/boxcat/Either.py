@@ -44,31 +44,3 @@ class Right(Either[L, R]):
     __match_args__ = ('value',)
     def __init__(self, value: R):
         self.value = value
-
-
-# Example usage
-def example():
-    left_value = Left("Error")
-    right_value = Right(42)
-
-    # Using map on Right
-    mapped_right = right_value.map(lambda x: x * 2)
-    print(mapped_right.value if mapped_right.is_right() else "No value")  # Output: 84
-
-    # Using flat_map on Right
-    flat_mapped_right = right_value.flat_map(lambda x: Right(x * 2))
-    print(flat_mapped_right.value if flat_mapped_right.is_right() else "No value")  # Output: 84
-
-    # Using fold
-    result = right_value.fold(
-        if_left=lambda x: f"Error: {x}",
-        if_right=lambda x: f"Success: {x}"
-    )
-    print(result)  # Output: Success: 42
-
-    # Using fold on Left
-    result = left_value.fold(
-        if_left=lambda x: f"Error: {x}",
-        if_right=lambda x: f"Success: {x}"
-    )
-    print(result)  # Output: Error: Error

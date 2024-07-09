@@ -61,36 +61,3 @@ class Seq(Generic[T]):
     def to_list(self) -> List[T]:
         return self.list
 
-
-
-if __name__ == "__main__":
-    # Example usage
-    numbers = [1, 2, 3, 4, 5]
-
-    # Create a sequence from a list of numbers
-    seq = Seq(numbers)
-
-    # Example usage of methods
-    print(f"Original List: {seq.to_list()}")
-
-    # Take first 3 elements
-    # print(f"Take 3: {seq.take(3).to_list()}")
-    print(f"Take 3: {numbers[:3]}")
-
-    # Map each element to its square
-    print(reversed(f"Map to squares: {seq.map(lambda x: x * x).to_list()}"))
-
-    # Flatten elements after mapping to lists
-    print(f"Flat map: {seq.flat_map(lambda x: [x, x]).to_list()}")
-
-    # Filter even numbers
-    print(f"Filter even: {seq.filter(lambda x: x % 2 == 0).to_list()}")
-
-    # Reduce to sum
-    print(f"Reduce sum: {seq.reduce(lambda x, y: x + y, 0)}")
-
-    # Fold from left starting with 0
-    print(f"Fold left: {seq.fold_left(0)(lambda x, y: x + y)}")
-
-    # Fold from right with a function returning a function to multiply
-    print(f"Fold right: {seq.fold_right(lambda x: lambda y: x * y, 1)}")
