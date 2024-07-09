@@ -101,8 +101,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: dist
-          asset_name: my_package-${{ env.NEW_VERSION }}.tar.gz
+          asset_path: dist/boxcat-${{ env.NEW_VERSION }}.tar.gz
+          asset_name: boxcat-${{ env.NEW_VERSION }}.tar.gz
           asset_content_type: application/gzip
 
       - name: Create and Checkout New Branch
