@@ -16,5 +16,5 @@ new_version="$1"
 rm ../pyproject.toml.bak
 rm ../setup.py.bak
 
-python setup.py sdist bdist_wheel
-twine upload dist/*
+python ../setup.py sdist bdist_wheel
+twine upload ../dist/*
