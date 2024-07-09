@@ -15,3 +15,6 @@ new_version="$1"
 # clean up .bak files
 rm pyproject.toml.bak
 rm setup.py.bak
+
+python setup.py sdist bdist_wheel
+twine upload dist/*
