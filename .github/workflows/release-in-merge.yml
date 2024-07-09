@@ -58,11 +58,22 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install setuptools wheel twine      
+          pip install setuptools wheel twine          
 
       - name: Update the project version temp
         run: |
           ./update_project_version.sh "${{ env.NEW_VERSION }}"
+
+      - name: Build package
+        run: |
+          python setup.py sdist bdist_wheel
+
+      - name: Publish package to PyPI
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        run: |
+          twine upload dist/*
 
       - name: Build package
         run: |
@@ -95,6 +106,6 @@ jobs:
           asset_content_type: application/gzip
 
       - name: Create and Checkout New Branch
-        run: | 
-              git checkout main
-              git branch -D new-branch-name
+        run: |
+          git checkout main
+          git branch -D new-branch-name
