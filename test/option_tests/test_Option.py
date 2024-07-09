@@ -36,7 +36,7 @@ def test_option_map_string_upper():
 def test_option_flat_map():
     some = Option(5)
     option_ten = some.flat_map(lambda x: Option(x * 2))
-    assert option_ten.get_or_else(0) == 9
+    assert option_ten.get_or_else(0) == 10
 
 
 def test_option_fold():
