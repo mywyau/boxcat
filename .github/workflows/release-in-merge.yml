@@ -57,7 +57,6 @@ jobs:
 
       - name: Update the project version temp
         run: |
-          cd publish_scripts
           ./update_project_version.sh "${{ env.NEW_VERSION }}"
 
       - name: Build package

@@ -13,8 +13,8 @@ new_version="$1"
 ./update_setup_py_file.sh $1
 
 # clean up .bak files
-rm ../pyproject.toml.bak
-rm ../setup.py.bak
+rm pyproject.toml.bak
+rm setup.py.bak
 
-python ../setup.py sdist bdist_wheel
-twine upload ../dist/*
+python setup.py sdist bdist_wheel
+twine upload dist/*
