@@ -213,6 +213,7 @@ def handle_either(either: Either[str, int]):
             return value
         case Left(error_message):
             return f"Got the error message: {error_messa
+            
 handle_either(right_value)
 
 # Output: 999
@@ -231,3 +232,70 @@ handle_either(left_value)
 
 # Output: "Error"
 ```
+---
+
+# Products
+
+So these were going to be added to the Tuple datatype but had to come up with
+another name for Tuples. So resorted to the Product type, from type algebra.
+
+Again my understanding is rudimentary at best when it comes to type theory and laws etc.
+
+### Important:
+
+    These only work for a single type, consistent across all Options 
+    within a ProductOpt() or Seqs within a ProductSeq() 
+
+But for the sake of hacking something together I present: 
+
+## .mapN()
+
+---
+
+## ProductOpt
+
+Pretty cursed but hey whatever, apply a 
+
+```
+opt1 = Option(1)
+opt2 = Option(2)
+opt3 = Option(3)
+
+productOpt = (
+    ProductOpt(
+        opt1,
+        opt2,
+        opt3
+    )
+    .mapN(lambda x, y, z: x + y + z)
+    .unsafe_get()
+)
+
+print(productOpt)
+
+# Output: 6
+```
+---
+
+## ProductSeq
+
+Hacky and Wacky
+
+```
+seq1 = Seq([1, 2, 3, 4])
+seq2 = Seq([4, 5, 6, 4])
+seq3 = Seq([7, 8, 9, 4])
+
+productSeq = (
+    ProductSeq(
+        seq1,
+        seq2,
+        seq3,
+    )
+    .mapN(lambda x: x.fold_left(0)(lambda i, j: i + j))
+    .to_list()
+)
+
+print(productSeq)
+
+# Output: [10, 19, 28]
