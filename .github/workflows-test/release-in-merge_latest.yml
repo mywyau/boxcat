@@ -48,6 +48,10 @@ jobs:
 
         echo "NEW_VERSION=$new_version" >> $GITHUB_ENV
 
+    - name: Clean workspace
+      run: |
+        rm -rf dist/ build/
+
     - name: Create and push new tag
       env:
         NEW_VERSION: ${{ env.NEW_VERSION }}
@@ -55,23 +59,7 @@ jobs:
         git tag "v${NEW_VERSION}"
         git push https://github-actions:${{ secrets.PAT }}@github.com/mywyau/boxcat.git "v${NEW_VERSION}"
 
-    - name: Create GitHub Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Set up Python
+      uses: actions/setup-python@v2
       with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        draft: false
-        prerelease: false
-
-    - name: Upload Release Assets
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./dist/*
-        asset_name: my_package-${{ github.ref }}.tar.gz
-        asset_content_type: application/gzip
+        python-version: '3.x'
