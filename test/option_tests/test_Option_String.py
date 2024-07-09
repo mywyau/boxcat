@@ -6,19 +6,13 @@ from boxcat.Option import Option
 
 
 def test_option_some():
-    some = Option(5)
+    some = Option("")
     assert some.is_some()
 
 
 def test_option_is_none():
-    some = Option(5)
-    assert not some.is_none()
-
-
-def test_option_map():
-    some = Option(5)
-    option_ten = some.map(lambda x: x * 2)
-    assert option_ten.get_or_else(0) == 10
+    some = Option(None)
+    assert some.is_none()
 
 
 def test_option_map_string_capitalized():

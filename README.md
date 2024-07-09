@@ -81,7 +81,7 @@ We can wrap traditional Lists [] in Seq()
 seq_empty = Seq([])
 seq_ten = Seq([10])
 seq_string = Seq(['hello', 'world'])
-seq_bool = Seq([Tru
+seq_bool = Seq([True])
 
 my_list = [1, 'a', 2, 'b', 3, 'c', 4, 'd', 5, 'e', 6, 'f', 7, 'g' 8, 'h', 9, 'i', 10]
 

@@ -1,3 +1,4 @@
+from functools import reduce
 from typing import List
 
 import pytest
