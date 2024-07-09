@@ -20,15 +20,24 @@ def test_option_map():
     option_ten = some.map(lambda x: x * 2)
     assert option_ten.get_or_else(0) == 10
 
+
 def test_option_map_string_capitalized():
     option_hello_world = Option("hello world")
     option_capitalized = option_hello_world.map(lambda s: s.capitalize())
     assert option_capitalized.get_or_else("option_empty") == "Hello world"
 
+
 def test_option_map_string_upper():
     option_hello_world = Option("hello world")
     option_upper_case = option_hello_world.map(lambda s: s.upper())
     assert option_upper_case.get_or_else("option_empty") == "HELLO WORLD"
+
+
+def test_option_map_string_reversed():
+    option_hello_world = Option("hello world")
+    option_capitalized = option_hello_world.map(lambda s: s[::-1])
+    assert option_capitalized.get_or_else("option_empty") == "dlrow olleh"
+
 
 def test_option_flat_map():
     some = Option(5)
