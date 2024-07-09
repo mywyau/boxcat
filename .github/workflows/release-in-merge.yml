@@ -67,19 +67,15 @@ jobs:
       - name: Build package
         run: |
           python setup.py sdist bdist_wheel
+        env:
+          VERSION: ${{ env.NEW_VERSION }}
 
       - name: Publish package to PyPI
         env:
           TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
         run: |
-          twine upload dist/*
-
-      - name: Build package
-        run: |
-          python setup.py sdist bdist_wheel
-        env:
-          VERSION: ${{ env.NEW_VERSION }}
+          twine upload dist/*    
 
       - name: Create GitHub Release
         id: create_release
@@ -109,3 +105,6 @@ jobs:
         run: |
           git checkout main
           git branch -D new-branch-name
+          git stash 
+          git stash clear
+          git clean -f
