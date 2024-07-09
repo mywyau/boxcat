@@ -61,11 +61,11 @@ jobs:
 
     - name: Update version in setup.py
       run: |
-        sed -i "s/version='.*'/version='${{ env.NEW_VERSION }}'/" setup.py
+        sed -i "s/^version = \".*\"$/version = \"$new_version\"/" setup.py
 
-    - name: Update version in setup.py
+    - name: Update version in pyproject.toml
       run: |
-        sed -i "s/version='.*'/version='${{ env.NEW_VERSION }}'/" pyproject.toml    
+        sed -i "s/^version = \".*\"$/version = \"$new_version\"/" pyproject.toml    
 
     - name: Create and push new tag
       env:
